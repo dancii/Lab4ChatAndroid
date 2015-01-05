@@ -11,6 +11,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.cardan.lab4_chatandroid.ChatWindowActivity;
+import com.cardan.lab4_chatandroid.MenuActivity;
+import com.cardan.lab4_chatandroid.R;
 import com.cardan.lab4_chatandroid.fragments.ActiveChats;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -46,10 +48,14 @@ public class GCMNotificationIntentService extends IntentService {
 
 				Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 
-				sendNotification("Message Received from Google GCM Server: "
-						+ extras.get(Config.MESSAGE_KEY));
+				if(ChatWindowActivity.isApplicationInForeground()){
+					System.out.println("In foreground!!!!!!!!!!!!!");
+					ChatWindowActivity.updateMessage(extras.get(Config.MESSAGE_KEY).toString());
+				}else{
+					System.out.println("In BACKGROUND!!!!");
+					sendNotification("Message Received from Google GCM Server: " + extras.get(Config.MESSAGE_KEY));
+				}
 				
-				ChatWindowActivity.updateMessage(extras.get(Config.MESSAGE_KEY).toString());
 				Log.i(TAG, "Received: " + extras.toString());
 			}
 		}
@@ -58,15 +64,13 @@ public class GCMNotificationIntentService extends IntentService {
 
 	private void sendNotification(String msg) {
 		Log.d(TAG, "Preparing to send notification...: " + msg);
-		mNotificationManager = (NotificationManager) this
-				.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, ActiveChats.class), 0);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class), 0);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle("GCM Notification")
-				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
 				.setContentText(msg);
 
 		mBuilder.setContentIntent(contentIntent);

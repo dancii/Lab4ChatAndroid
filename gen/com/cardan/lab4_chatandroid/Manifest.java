@@ -9,6 +9,6 @@ package com.cardan.lab4_chatandroid;
 
 public final class Manifest {
     public static final class permission {
-        public static final String C2D_MESSAGE="com.cardan.lab4_chatandroid.gcm.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="com.cardan.lab4_chatandroid.permission.C2D_MESSAGE";
     }
 }
