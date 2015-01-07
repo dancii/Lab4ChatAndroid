@@ -394,35 +394,50 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 	                    }
 	                });*/
 	         }
-			return null;
 			 
-			 /*try{
-			        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-			        StringBuilder sb = new StringBuilder();
-			        String line = null;
-			        while ((line = reader.readLine()) != null) {
-			                sb.append(line);
-			        }
-			        is.close();
-			 
-			        result=sb.toString();
+			 try{
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+		        StringBuilder sb = new StringBuilder();
+		        String line = null;
+		        while ((line = reader.readLine()) != null) {
+		                sb.append(line);
+		        }
+		        is.close();
+		 
+		        result=sb.toString();
 			}catch(Exception e){
 				Log.e("log_tag", "Error converting result "+e.toString());
 			}
 			System.out.println("Result: "+result);
 			//Add user to a textfile or sqlite, save convo
-			if(result.equalsIgnoreCase("notfound")){
+			if(result.equalsIgnoreCase("error")){
 				System.out.println("No such user");
 				return null;
 			}else{
 				System.out.println("User added!");
 				return result;
 			}
-			*/
+			
 		}
 
-		protected void onPostExecute(String arg) {
-			activeChats.getAllConvos(Plus.AccountApi.getAccountName(mGoogleApiClient));
+		protected void onPostExecute(String result) {
+			if(result == null){
+				System.out.println("NO PERSON ADDED!!!!!!!!!!!!!!!!");
+				new AlertDialog.Builder(MenuActivity.this)
+				.setTitle("Add contact error")
+				.setMessage("You can not add yourself, add a person you already are in a conversation in or you added a person that does not exist")
+				.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//Do nothing
+					}
+				}).show();
+			}else{
+				Toast.makeText(getApplicationContext(), "Person added", Toast.LENGTH_SHORT).show();
+				activeChats.getAllConvos(Plus.AccountApi.getAccountName(mGoogleApiClient));
+			}
+			
 		}
 	}
 	

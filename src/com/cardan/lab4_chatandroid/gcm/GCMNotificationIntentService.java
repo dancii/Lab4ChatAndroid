@@ -71,7 +71,8 @@ public class GCMNotificationIntentService extends IntentService {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle("GCM Notification")
-				.setContentText(msg);
+				.setContentText(msg)
+				.setAutoCancel(true);
 
 		mBuilder.setContentIntent(contentIntent);
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

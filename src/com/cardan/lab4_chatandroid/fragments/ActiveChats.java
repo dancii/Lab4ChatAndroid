@@ -47,7 +47,7 @@ public class ActiveChats extends Fragment implements ConnectionCallbacks, OnConn
 	ListView list=null;
 	private String contactChatId = null;
 	private GoogleApiClient mGoogleApiClient;
-	private ArrayList<User> allActiveChats;
+	private ArrayList<User> allActiveChats = new ArrayList<User>();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,10 +139,10 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 			System.out.println("Result: "+result);
 			//Add user to a textfile or sqlite, save convo
 			if(result.equalsIgnoreCase("notfound")){
-				System.out.println("No such user");
+				System.out.println("No convos added");
 				return null;
 			}else{
-				System.out.println("User added!");
+				System.out.println("Convos added!");
 				return result;
 			}
 			
@@ -151,6 +151,8 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 		protected void onPostExecute(String gsonResult) {
 			if(gsonResult != null){
 				Gson gson = new Gson();
+				allActiveChats.clear();
+				listItems.clear();
 				allActiveChats = gson.fromJson(gsonResult, new TypeToken<Collection<User>>(){}.getType());
 				for (User usernames : allActiveChats) {
 					listItems.add(usernames.getEmail());
