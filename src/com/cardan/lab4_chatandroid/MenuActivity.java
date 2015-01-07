@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 
 import org.apache.http.HttpEntity;
@@ -31,6 +32,8 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.Plus;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -209,7 +212,9 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 					// TODO Auto-generated method stub
 					AddConvoToDB addConvoToDb = new AddConvoToDB();
 					addedContact = input.getText().toString();
-					addConvoToDb.execute(addedContact);
+					String fromUsername = Plus.AccountApi.getAccountName(mGoogleApiClient);
+					String[] usernames = {fromUsername,addedContact};
+					addConvoToDb.execute(usernames);
 				}
 			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				
@@ -362,15 +367,18 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		}	
 	}
 
-	private class AddConvoToDB extends AsyncTask<String, String, String>{
+private class AddConvoToDB extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {
 			 String result = "";
-			 String username = params[0];
+			 String fromUsername = params[0];
+			 String toUsername = params[1];
 			 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
 			 InputStream is = null;
-			 nameValuePairs.add(new BasicNameValuePair("checkReq", "addConvoContact"));
-			 nameValuePairs.add(new BasicNameValuePair("username", username));
+			 nameValuePairs.add(new BasicNameValuePair("checkReq", "registerConvo"));
+			 nameValuePairs.add(new BasicNameValuePair("fromUsername", fromUsername));
+			 nameValuePairs.add(new BasicNameValuePair("toUsername", toUsername));
+			 
 			 try{
 	            	HttpClient httpClient=new DefaultHttpClient();
 	            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
@@ -386,8 +394,9 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 	                    }
 	                });*/
 	         }
+			return null;
 			 
-			 try{
+			 /*try{
 			        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
 			        StringBuilder sb = new StringBuilder();
 			        String line = null;
@@ -409,15 +418,12 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 				System.out.println("User added!");
 				return result;
 			}
-			
-		}
-		
-		protected void onPostExecute(String addedContactChatId) {
-			if(addedContactChatId!=null){
-				activeChats.setContact(addedContact, addedContactChatId);
-			}
+			*/
 		}
 
+		protected void onPostExecute(String arg) {
+			activeChats.getAllConvos(Plus.AccountApi.getAccountName(mGoogleApiClient));
+		}
 	}
 	
 	/*
