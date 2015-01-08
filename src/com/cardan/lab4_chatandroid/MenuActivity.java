@@ -212,9 +212,14 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 					// TODO Auto-generated method stub
 					AddConvoToDB addConvoToDb = new AddConvoToDB();
 					addedContact = input.getText().toString();
-					String fromUsername = Plus.AccountApi.getAccountName(mGoogleApiClient);
-					String[] usernames = {fromUsername,addedContact};
-					addConvoToDb.execute(usernames);
+					if(isValidEmail(addedContact)){
+						String fromUsername = Plus.AccountApi.getAccountName(mGoogleApiClient);
+						String[] usernames = {fromUsername,addedContact};
+						addConvoToDb.execute(usernames);
+					}else{
+						Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+					}
+					
 				}
 			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				
@@ -227,6 +232,14 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		return super.onOptionsItemSelected(item);
 	}
 
+	public final static boolean isValidEmail(CharSequence target) {
+	    if (target == null) {
+	        return false;
+	    } else {
+	        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+	    }
+	}
+	
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {

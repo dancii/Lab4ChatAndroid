@@ -18,7 +18,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.cardan.lab4_chatandroid.ChatWindowActivity;
 import com.cardan.lab4_chatandroid.R;
-import com.cardan.lab4_chatandroid.User;
+import com.cardan.lab4_chatandroid.model.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -64,6 +64,7 @@ public class ActiveChats extends Fragment implements ConnectionCallbacks, OnConn
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(getActivity(),ChatWindowActivity.class);
+				i.putExtra("fromContact", Plus.AccountApi.getAccountName(mGoogleApiClient));
 				i.putExtra("contactName", allActiveChats.get(arg2).getEmail());
 				i.putExtra("contactChatId", allActiveChats.get(arg2).getAndroidChatId());
 				startActivity(i);

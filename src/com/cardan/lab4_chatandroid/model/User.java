@@ -1,4 +1,4 @@
-package com.cardan.lab4_chatandroid;
+package com.cardan.lab4_chatandroid.model;
 
 public class User {
 
