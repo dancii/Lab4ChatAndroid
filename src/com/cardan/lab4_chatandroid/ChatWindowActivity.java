@@ -53,9 +53,6 @@ public class ChatWindowActivity extends Activity{
 	
 	private static int resumed = 0;
     private static int paused = 0;
-    private static int started = 0;
-    private static int stopped = 0;
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,68 +165,6 @@ public class ChatWindowActivity extends Activity{
 		GetAllMessages getAllMessage = new GetAllMessages();
 		String[] toFromEmail = {fromEmail, contactName};
 		getAllMessage.execute(toFromEmail);
-	}
-	
-private static class SendMessage extends AsyncTask<String, String, String>{
-		
-		protected String doInBackground(String... params) {
-			String result ="";
-			 String fromEmail = params[0];
-			 String toEmail = params[1];
-			 String message = params[2];
-			 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
-			 InputStream is = null;
-			 nameValuePairs.add(new BasicNameValuePair("checkReq", "sendMessage"));
-			 nameValuePairs.add(new BasicNameValuePair("fromUsername", fromEmail));
-			 nameValuePairs.add(new BasicNameValuePair("toUsername", toEmail));
-			 nameValuePairs.add(new BasicNameValuePair("message", message));
-			 
-			 try{
-	            	HttpClient httpClient=new DefaultHttpClient();
-	            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
-	            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	            	HttpResponse response=httpClient.execute(httpPost);
-	            	HttpEntity entity=response.getEntity();
-	            	is=entity.getContent();
-	         }catch(Exception e){
-	            	/*Log.e("log_tag", "Error in http connection "+e.toString());
-	            	MainActivity.this.runOnUiThread(new Runnable() {
-	                    public void run() {
-	                    	Toast.makeText(MainActivity.this, "Server is currently down", Toast.LENGTH_LONG).show();
-	                    }
-	                });*/
-	         }
-			 
-			 /*try{
-		        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-		        StringBuilder sb = new StringBuilder();
-		        String line = null;
-		        while ((line = reader.readLine()) != null) {
-		                sb.append(line);
-		        }
-		        is.close();
-		 
-		        result=sb.toString();
-			}catch(Exception e){
-				Log.e("log_tag", "Error converting result "+e.toString());
-			}
-			System.out.println("Result: "+result);
-			//Add user to a textfile or sqlite, save convo
-			if(result.equalsIgnoreCase("notfound")){
-				System.out.println("No messages");
-				return null;
-			}else{
-				return result;
-			}*/
-			 return null;
-			
-		}
-
-		protected void onPostExecute(String result) {
-			messageHistory+="You: "+message+"\n";
-			txtMessages.setText(messageHistory);
-			editTxtMessage.setText("");
-		}
 	}
 
 

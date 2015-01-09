@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import android.app.Fragment;
@@ -39,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ActiveChats extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener{
 	
@@ -150,16 +152,22 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 		}
 		
 		protected void onPostExecute(String gsonResult) {
-			if(gsonResult != null){
-				Gson gson = new Gson();
-				allActiveChats.clear();
-				listItems.clear();
-				allActiveChats = gson.fromJson(gsonResult, new TypeToken<Collection<User>>(){}.getType());
-				for (User usernames : allActiveChats) {
-					listItems.add(usernames.getEmail());
+			
+			try{
+				if(gsonResult != null){
+					Gson gson = new Gson();
+					allActiveChats.clear();
+					listItems.clear();
+					allActiveChats = gson.fromJson(gsonResult, new TypeToken<Collection<User>>(){}.getType());
+					for (User usernames : allActiveChats) {
+						listItems.add(usernames.getEmail());
+					}
+					adapter.notifyDataSetChanged();
 				}
-				adapter.notifyDataSetChanged();
+			}catch(JsonSyntaxException e){
+				Toast.makeText(getActivity(), "Server is currently down", Toast.LENGTH_SHORT).show();
 			}
+			
 		}
 
 	}
