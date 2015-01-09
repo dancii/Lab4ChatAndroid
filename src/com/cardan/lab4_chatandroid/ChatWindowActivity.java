@@ -44,11 +44,11 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 	private String contactChatId=null;
 	private Button btnSend=null;
 	private static TextView txtMessages=null;
-	private EditText editTxtMessage=null;
-	private String message="";
+	private static EditText editTxtMessage=null;
+	private static String message="";
 	private static String messageHistory="";
 	private ShareExternalServer appUtil;
-	private AsyncTask<Void, Void, String> shareRegidTask;
+	private AsyncTask<String, Void, String> shareRegidTask;
 	private static ArrayList<Message> allMessages = new ArrayList<Message>();
 	
 	private static int resumed = 0;
@@ -74,6 +74,8 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 			contactChatId = extras.getString("contactChatId");
 		}
 		
+		updateMessages();
+		
 		System.out.println("ContactId: "+contactChatId+" Contactname: "+contactName+" Message: "+message);
 		btnSend.setOnClickListener(new View.OnClickListener() {
 			
@@ -81,24 +83,79 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				message +=editTxtMessage.getText().toString();
-				messageHistory+="You: "+message+"\n";
-				shareRegidTask = new AsyncTask<Void,Void,String>() {
+				//messageHistory+="You: "+message+"\n";
+				String[] sendMessageObj = {fromEmail,contactName,message};
+				shareRegidTask = new AsyncTask<String,Void,String>() {
 					@Override
-					protected String doInBackground(Void... params) {
+					protected String doInBackground(String... params) {
+						
+						String fromEmail = params[0];
+						 String toEmail = params[1];
+						 String message = params[2];
+						 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
+						 InputStream is = null;
+						 nameValuePairs.add(new BasicNameValuePair("checkReq", "sendMessage"));
+						 nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
+						 nameValuePairs.add(new BasicNameValuePair("toEmail", toEmail));
+						 nameValuePairs.add(new BasicNameValuePair("message", message));
+						 
+						 try{
+				            	HttpClient httpClient=new DefaultHttpClient();
+				            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
+				            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				            	HttpResponse response=httpClient.execute(httpPost);
+				            	HttpEntity entity=response.getEntity();
+				            	is=entity.getContent();
+				         }catch(Exception e){
+				            	/*Log.e("log_tag", "Error in http connection "+e.toString());
+				            	MainActivity.this.runOnUiThread(new Runnable() {
+				                    public void run() {
+				                    	Toast.makeText(MainActivity.this, "Server is currently down", Toast.LENGTH_LONG).show();
+				                    }
+				                });*/
+				         }
+						 
+						 /*try{
+					        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+					        StringBuilder sb = new StringBuilder();
+					        String line = null;
+					        while ((line = reader.readLine()) != null) {
+					                sb.append(line);
+					        }
+					        is.close();
+					 
+					        result=sb.toString();
+						}catch(Exception e){
+							Log.e("log_tag", "Error converting result "+e.toString());
+						}
+						System.out.println("Result: "+result);
+						//Add user to a textfile or sqlite, save convo
+						if(result.equalsIgnoreCase("notfound")){
+							System.out.println("No messages");
+							return null;
+						}else{
+							return result;
+						}*/
+						
+						
 						String result = appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
-						message = "";
+						
 						return result;
 					}
 					// TA BORT messageHistory härifrån, ny asynctask, skicka message till server.
 					protected void onPostExecute(String result) {
-						shareRegidTask = null;
+//						shareRegidTask = null;
+//						txtMessages.setText(messageHistory);
+//						//Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+//						editTxtMessage.setText("");
+						
+						messageHistory+="You: "+message+"\n";
 						txtMessages.setText(messageHistory);
-						Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
 						editTxtMessage.setText("");
 					}
 
 				};
-				shareRegidTask.execute(null, null, null);
+				shareRegidTask.execute(sendMessageObj);
 			}
 		});
 		
@@ -111,6 +168,70 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 		getAllMessage.execute(toFromEmail);
 	}
 	
+private static class SendMessage extends AsyncTask<String, String, String>{
+		
+		protected String doInBackground(String... params) {
+			String result ="";
+			 String fromEmail = params[0];
+			 String toEmail = params[1];
+			 String message = params[2];
+			 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
+			 InputStream is = null;
+			 nameValuePairs.add(new BasicNameValuePair("checkReq", "sendMessage"));
+			 nameValuePairs.add(new BasicNameValuePair("fromUsername", fromEmail));
+			 nameValuePairs.add(new BasicNameValuePair("toUsername", toEmail));
+			 nameValuePairs.add(new BasicNameValuePair("message", message));
+			 
+			 try{
+	            	HttpClient httpClient=new DefaultHttpClient();
+	            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
+	            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+	            	HttpResponse response=httpClient.execute(httpPost);
+	            	HttpEntity entity=response.getEntity();
+	            	is=entity.getContent();
+	         }catch(Exception e){
+	            	/*Log.e("log_tag", "Error in http connection "+e.toString());
+	            	MainActivity.this.runOnUiThread(new Runnable() {
+	                    public void run() {
+	                    	Toast.makeText(MainActivity.this, "Server is currently down", Toast.LENGTH_LONG).show();
+	                    }
+	                });*/
+	         }
+			 
+			 /*try{
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+		        StringBuilder sb = new StringBuilder();
+		        String line = null;
+		        while ((line = reader.readLine()) != null) {
+		                sb.append(line);
+		        }
+		        is.close();
+		 
+		        result=sb.toString();
+			}catch(Exception e){
+				Log.e("log_tag", "Error converting result "+e.toString());
+			}
+			System.out.println("Result: "+result);
+			//Add user to a textfile or sqlite, save convo
+			if(result.equalsIgnoreCase("notfound")){
+				System.out.println("No messages");
+				return null;
+			}else{
+				return result;
+			}*/
+			 return null;
+			
+		}
+
+		protected void onPostExecute(String result) {
+			messageHistory+="You: "+message+"\n";
+			txtMessages.setText(messageHistory);
+			editTxtMessage.setText("");
+		}
+	}
+
+
+	
 private static class GetAllMessages extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {
@@ -120,8 +241,8 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 			 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
 			 InputStream is = null;
 			 nameValuePairs.add(new BasicNameValuePair("checkReq", "getAllMessages"));
-			 nameValuePairs.add(new BasicNameValuePair("fromUsername", fromEmail));
-			 nameValuePairs.add(new BasicNameValuePair("toUsername", toEmail));
+			 nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
+			 nameValuePairs.add(new BasicNameValuePair("toEmail", toEmail));
 			 
 			 try{
 	            	HttpClient httpClient=new DefaultHttpClient();
@@ -164,18 +285,23 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 		}
 
 		protected void onPostExecute(String result) {
-			allMessages.clear();
-			messageHistory = "";
-			Gson gson = new Gson();
-			allMessages = gson.fromJson(result, new TypeToken<Collection<Message>>(){}.getType());
-			for (Message message : allMessages) {
-				if(message.getFromEmail().equalsIgnoreCase(fromEmail)){
-					messageHistory+="You: "+message.getMessage()+"\n";
-				}else{
-					messageHistory+=message.getToEmail()+": "+message.getMessage()+"\n";
+			if(result == null){
+				
+			}else{
+				allMessages.clear();
+				messageHistory = "";
+				Gson gson = new Gson();
+				allMessages = gson.fromJson(result, new TypeToken<Collection<Message>>(){}.getType());
+				for (Message message : allMessages) {
+					if(message.getFromEmail().equalsIgnoreCase(fromEmail)){
+						messageHistory+="You: "+message.getMessage()+"\n";
+					}else{
+						messageHistory+=message.getToEmail()+": "+message.getMessage()+"\n";
+					}
 				}
+				updateMessage(messageHistory);
 			}
-			updateMessage(messageHistory);
+
 		}
 	}
 	
