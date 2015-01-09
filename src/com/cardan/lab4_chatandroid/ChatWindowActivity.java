@@ -37,7 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ChatWindowActivity extends Activity implements ActivityLifecycleCallbacks{
+public class ChatWindowActivity extends Activity{
 
 	private static String fromEmail=null;
 	private static String contactName=null;
@@ -82,6 +82,7 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				message="";
 				message +=editTxtMessage.getText().toString();
 				//messageHistory+="You: "+message+"\n";
 				String[] sendMessageObj = {fromEmail,contactName,message};
@@ -156,6 +157,7 @@ public class ChatWindowActivity extends Activity implements ActivityLifecycleCal
 
 				};
 				shareRegidTask.execute(sendMessageObj);
+				
 			}
 		});
 		
@@ -273,7 +275,7 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 			}catch(Exception e){
 				Log.e("log_tag", "Error converting result "+e.toString());
 			}
-			System.out.println("Result: "+result);
+			//System.out.println("Result: "+result);
 			//Add user to a textfile or sqlite, save convo
 			if(result.equalsIgnoreCase("notfound")){
 				System.out.println("No messages");
@@ -296,7 +298,7 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 					if(message.getFromEmail().equalsIgnoreCase(fromEmail)){
 						messageHistory+="You: "+message.getMessage()+"\n";
 					}else{
-						messageHistory+=message.getToEmail()+": "+message.getMessage()+"\n";
+						messageHistory+=message.getFromEmail()+": "+message.getMessage()+"\n";
 					}
 				}
 				updateMessage(messageHistory);
@@ -326,54 +328,23 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 		
 	}
 	
-    // And these two public static functions
-    public static boolean isApplicationVisible() {
-        return started > stopped;
-    }
-
+	@Override
+	protected void onPause(){
+		System.out.println("Paused: "+paused+" Resumed: "+resumed);
+		super.onPause();
+		++paused;
+	}
+	
+	@Override
+	protected void onResume(){
+		System.out.println("Paused: "+paused+" Resumed: "+resumed);
+		super.onResume();
+		++resumed;
+	}
+	
     public static boolean isApplicationInForeground() {
+    	System.out.println("Paused: "+paused+" Resumed: "+resumed);
         return resumed > paused;
     }
 
-	@Override
-	public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onActivityDestroyed(Activity activity) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onActivityPaused(Activity activity) {
-		// TODO Auto-generated method stub
-		++paused;
-	}
-
-	@Override
-	public void onActivityResumed(Activity activity) {
-		// TODO Auto-generated method stub
-		++resumed;
-	}
-
-	@Override
-	public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onActivityStarted(Activity activity) {
-		// TODO Auto-generated method stub
-		++started;
-	}
-
-	@Override
-	public void onActivityStopped(Activity activity) {
-		// TODO Auto-generated method stub
-		++stopped;
-	}
 }
