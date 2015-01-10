@@ -99,7 +99,7 @@ public class ChatWindowActivity extends Activity{
 						 
 						 try{
 				            	HttpClient httpClient=new DefaultHttpClient();
-				            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
+				            	HttpPost httpPost = new HttpPost("http://dancii.net:8080//GCM-App-Server/AuthServlet");
 				            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				            	HttpResponse response=httpClient.execute(httpPost);
 				            	HttpEntity entity=response.getEntity();

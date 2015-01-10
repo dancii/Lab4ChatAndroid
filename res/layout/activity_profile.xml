@@ -15,7 +15,7 @@
         android:layout_alignBaseline="@+id/txtEmail"
         android:layout_alignBottom="@+id/txtEmail"
         android:layout_alignParentLeft="true"
-        android:text="Email: " />
+        android:text="Your Email: " />
 
     <TextView
         android:id="@+id/txtEmail"
