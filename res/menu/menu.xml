@@ -13,5 +13,12 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/addUser"/>
+    
+    <item
+        android:id="@+id/createRoom"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/createRoom" 
+        />
 
 </menu>

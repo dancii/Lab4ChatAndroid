@@ -100,6 +100,15 @@ public class ActiveChats extends Fragment implements ConnectionCallbacks, OnConn
 		mGoogleApiClient.connect();
 	}
 	
+	@Override
+	public void onStop() {
+	    super.onStop();
+
+	    if (mGoogleApiClient.isConnected()) {
+	      mGoogleApiClient.disconnect();
+	    }
+	}
+	
 	
 	
 private class GetAllConvos extends AsyncTask<String, String, String>{
@@ -164,9 +173,11 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 						listItems.add(usernames.getEmail());
 					}
 					adapter.notifyDataSetChanged();
+				}else{
+					Toast.makeText(getActivity(), "No active chats", Toast.LENGTH_SHORT).show();
 				}
 			}catch(JsonSyntaxException e){
-				Toast.makeText(getActivity(), "Server is currently down", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Server is currently down active chats", Toast.LENGTH_SHORT).show();
 			}
 			
 		}

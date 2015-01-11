@@ -76,7 +76,15 @@
         <activity
             android:name=".ChatWindowActivity"
             android:label="@string/title_activity_chat_window"
-			android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name=".Terminal"
+            android:label="@string/title_activity_terminal" >
+        </activity>
+        <activity
+            android:name=".RoomChatWindow"
+            android:label="@string/title_activity_room_chat_window" >
         </activity>
     </application>
 

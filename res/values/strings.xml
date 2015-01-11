@@ -9,10 +9,15 @@
     <string name="title_section1">PM</string>
     <string name="title_section2">Rooms</string>
     <string name="title_section3">PROFILE</string>
+    <string name="title_section4">Terminal</string>
     <string name="title_activity_active_chats">ActiveChats</string>
     <string name="title_activity_rooms">Rooms</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_chat_window">ChatWindowActivity</string>
+    <string name="createRoom">Create Room</string>
+    <string name="title_activity_terminal">Terminal</string>
+    <string name="enter">Enter</string>
+    <string name="title_activity_room_chat_window">RoomChatWindow</string>
 
 </resources>

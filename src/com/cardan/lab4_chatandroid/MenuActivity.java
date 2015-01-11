@@ -282,6 +282,8 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 				return new Rooms();
 			case 2:
 				return new Profile();
+			case 3:
+				return new Terminal();
 			}
 			return null;
 		}
@@ -289,7 +291,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -302,6 +304,8 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
+			case 3:
+				return getString(R.string.title_section4).toUpperCase(l);
 			}
 			return null;
 		}
@@ -455,6 +459,7 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 		}
 	}
 	
+
 	/*
 	 * GCM STUFF
 	 */

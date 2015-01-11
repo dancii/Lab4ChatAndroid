@@ -13,6 +13,7 @@ import android.util.Log;
 import com.cardan.lab4_chatandroid.ChatWindowActivity;
 import com.cardan.lab4_chatandroid.MenuActivity;
 import com.cardan.lab4_chatandroid.R;
+import com.cardan.lab4_chatandroid.RoomChatWindow;
 import com.cardan.lab4_chatandroid.fragments.ActiveChats;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -47,14 +48,22 @@ public class GCMNotificationIntentService extends IntentService {
 					.equals(messageType)) {
 
 				Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-
-				if(ChatWindowActivity.isApplicationInForeground()){
-					System.out.println("In foreground!!!!!!!!!!!!!");
-					ChatWindowActivity.updateMessages();
+				
+				String messageFromServer = extras.get(Config.MESSAGE_KEY).toString();
+				
+				if(messageFromServer.substring(0,5).equalsIgnoreCase("<>!?/*")){
+					RoomChatWindow.updateRoomMessages();
 				}else{
-					System.out.println("In BACKGROUND!!!!");
-					sendNotification("Message Received from Google GCM Server: " + extras.get(Config.MESSAGE_KEY));
+					if(ChatWindowActivity.isApplicationInForeground()){
+						System.out.println("In foreground!!!!!!!!!!!!!");
+						ChatWindowActivity.updateMessages();
+					}else{
+						System.out.println("In BACKGROUND!!!!");
+						sendNotification("Message Received from Google GCM Server: " + extras.get(Config.MESSAGE_KEY));
+					}
 				}
+				
+				
 				
 				Log.i(TAG, "Received: " + extras.toString());
 			}
