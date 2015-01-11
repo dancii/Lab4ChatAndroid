@@ -66,6 +66,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public class MenuActivity extends FragmentActivity implements ActionBar.TabListener, ConnectionCallbacks, OnConnectionFailedListener{
 
 	/**
@@ -370,7 +371,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
             
             try{
             	HttpClient httpClient=new DefaultHttpClient();
-            	HttpPost httpPost=new HttpPost("http://192.168.1.187:8080/GCM-App-Server/AuthServlet");
+            	HttpPost httpPost=new HttpPost(Configuration.SERVER_URL);
             	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             	httpClient.execute(httpPost);
             }catch(Exception e){
@@ -394,7 +395,7 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 			 
 			 try{
 	            	HttpClient httpClient=new DefaultHttpClient();
-	            	HttpPost httpPost = new HttpPost("http://192.168.1.187:8080/GCM-App-Server/AuthServlet");
+	            	HttpPost httpPost = new HttpPost(Configuration.SERVER_URL);
 	            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	            	HttpResponse response=httpClient.execute(httpPost);
 	            	HttpEntity entity=response.getEntity();

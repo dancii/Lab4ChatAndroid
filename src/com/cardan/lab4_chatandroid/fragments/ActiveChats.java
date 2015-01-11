@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.cardan.lab4_chatandroid.ChatWindowActivity;
+import com.cardan.lab4_chatandroid.Configuration;
 import com.cardan.lab4_chatandroid.R;
 import com.cardan.lab4_chatandroid.model.User;
 import com.google.android.gms.common.ConnectionResult;
@@ -112,7 +113,7 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 			 nameValuePairs.add(new BasicNameValuePair("username", username));
 			 try{
 	            	HttpClient httpClient=new DefaultHttpClient();
-	            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
+	            	HttpPost httpPost = new HttpPost(Configuration.SERVER_URL);
 	            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	            	HttpResponse response=httpClient.execute(httpPost);
 	            	HttpEntity entity=response.getEntity();

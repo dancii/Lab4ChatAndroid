@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.cardan.lab4_chatandroid.Configuration;
 import com.cardan.lab4_chatandroid.gcm.ShareExternalServer;
 import com.cardan.lab4_chatandroid.model.Message;
 import com.cardan.lab4_chatandroid.model.User;
@@ -71,6 +72,8 @@ public class ChatWindowActivity extends Activity{
 			contactChatId = extras.getString("contactChatId");
 		}
 		
+		appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
+		
 		updateMessages();
 		
 		System.out.println("ContactId: "+contactChatId+" Contactname: "+contactName+" Message: "+message);
@@ -99,46 +102,15 @@ public class ChatWindowActivity extends Activity{
 						 
 						 try{
 				            	HttpClient httpClient=new DefaultHttpClient();
-				            	HttpPost httpPost = new HttpPost("http://dancii.net:8080//GCM-App-Server/AuthServlet");
+				            	HttpPost httpPost = new HttpPost(Configuration.SERVER_URL);
 				            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				            	HttpResponse response=httpClient.execute(httpPost);
 				            	HttpEntity entity=response.getEntity();
 				            	is=entity.getContent();
 				         }catch(Exception e){
-				            	/*Log.e("log_tag", "Error in http connection "+e.toString());
-				            	MainActivity.this.runOnUiThread(new Runnable() {
-				                    public void run() {
-				                    	Toast.makeText(MainActivity.this, "Server is currently down", Toast.LENGTH_LONG).show();
-				                    }
-				                });*/
+				        	 Toast.makeText(getApplicationContext(), "Server seems to be down, please try again later",  Toast.LENGTH_SHORT).show();
 				         }
-						 
-						 /*try{
-					        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-					        StringBuilder sb = new StringBuilder();
-					        String line = null;
-					        while ((line = reader.readLine()) != null) {
-					                sb.append(line);
-					        }
-					        is.close();
-					 
-					        result=sb.toString();
-						}catch(Exception e){
-							Log.e("log_tag", "Error converting result "+e.toString());
-						}
-						System.out.println("Result: "+result);
-						//Add user to a textfile or sqlite, save convo
-						if(result.equalsIgnoreCase("notfound")){
-							System.out.println("No messages");
-							return null;
-						}else{
-							return result;
-						}*/
-						
-						
-						String result = appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
-						
-						return result;
+						return null;
 					}
 					// TA BORT messageHistory härifrån, ny asynctask, skicka message till server.
 					protected void onPostExecute(String result) {
@@ -183,7 +155,7 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 			 
 			 try{
 	            	HttpClient httpClient=new DefaultHttpClient();
-	            	HttpPost httpPost = new HttpPost("http://dancii.net:8080/GCM-App-Server/AuthServlet");
+	            	HttpPost httpPost = new HttpPost(Configuration.SERVER_URL);
 	            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	            	HttpResponse response=httpClient.execute(httpPost);
 	            	HttpEntity entity=response.getEntity();

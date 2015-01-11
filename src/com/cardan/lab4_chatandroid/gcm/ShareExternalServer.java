@@ -1,16 +1,6 @@
 package com.cardan.lab4_chatandroid.gcm;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -21,7 +11,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ShareExternalServer {
 
