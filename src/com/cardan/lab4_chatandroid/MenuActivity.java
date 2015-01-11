@@ -496,17 +496,7 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 		return registrationId;
 	}
 
-	private static int getAppVersion(Context context) {
-		try {
-			PackageInfo packageInfo = context.getPackageManager()
-					.getPackageInfo(context.getPackageName(), 0);
-			return packageInfo.versionCode;
-		} catch (NameNotFoundException e) {
-			Log.d("RegisterActivity",
-					"I never expected this! Going down, going down!" + e);
-			throw new RuntimeException(e);
-		}
-	}
+
 
 	private void registerInBackground() {
 		new AsyncTask<Void, Void, String>() {
@@ -541,11 +531,11 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 
 	private void storeRegistrationId(Context context, String regId) {
 		final SharedPreferences prefs = getSharedPreferences(RegisterActivity.class.getSimpleName(), Context.MODE_PRIVATE);
-		int appVersion = getAppVersion(context);
-		Log.i(TAG, "Saving regId on app version " + appVersion);
+		//int appVersion = getAppVersion(context);
+		Log.i(TAG, "Saving regId on app version " + 1);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(REG_ID, regId);
-		editor.putInt(APP_VERSION, appVersion);
+		editor.putInt(APP_VERSION, 1);
 		editor.commit();
 	}
 	

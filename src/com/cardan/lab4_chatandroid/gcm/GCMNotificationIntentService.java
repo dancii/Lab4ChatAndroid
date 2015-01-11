@@ -51,11 +51,8 @@ public class GCMNotificationIntentService extends IntentService {
 				
 				//Checks if the message comes from room activity or a conversation between two parts.
 				String messageFromServer = extras.get(Config.MESSAGE_KEY).toString();
-				if(messageFromServer.substring(0,6).equalsIgnoreCase("<>!?/*")){
-					if(RoomChatWindow.isApplicationInForeground()){
-						RoomChatWindow.updateRoomMessages();
-					}
-				}else{
+				int messageLength=messageFromServer.length();
+				if(messageLength<6){
 					if(ChatWindowActivity.isApplicationInForeground()){
 						System.out.println("In foreground!!!!!!!!!!!!!");
 						ChatWindowActivity.updateMessages();
@@ -64,8 +61,22 @@ public class GCMNotificationIntentService extends IntentService {
 						sendNotification("Message Received from Google GCM Server: " + extras.get(Config.MESSAGE_KEY));
 						GcmBroadcastReceiver.completeWakefulIntent(intent);
 					}
+				}else{
+					if(messageFromServer.substring(0,6).equalsIgnoreCase("<>!?/*")){
+						if(RoomChatWindow.isApplicationInForeground()){
+							RoomChatWindow.updateRoomMessages();
+						}
+					}else{
+						if(ChatWindowActivity.isApplicationInForeground()){
+							System.out.println("In foreground!!!!!!!!!!!!!");
+							ChatWindowActivity.updateMessages();
+						}else{
+							System.out.println("In BACKGROUND!!!!");
+							sendNotification("Message Received from Google GCM Server: " + extras.get(Config.MESSAGE_KEY));
+							GcmBroadcastReceiver.completeWakefulIntent(intent);
+						}
+					}
 				}
-				
 				
 				
 				Log.i(TAG, "Received: " + extras.toString());

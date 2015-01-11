@@ -174,6 +174,8 @@ private class GetAllConvos extends AsyncTask<String, String, String>{
 					}
 					adapter.notifyDataSetChanged();
 				}else{
+					allActiveChats.clear();
+					listItems.clear();
 					Toast.makeText(getActivity(), "No active chats", Toast.LENGTH_SHORT).show();
 				}
 			}catch(JsonSyntaxException e){

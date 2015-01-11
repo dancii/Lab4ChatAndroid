@@ -59,18 +59,32 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 				// TODO Auto-generated method stub
 				String command = editTxtCommands.getText().toString();
 				if(command.charAt(0) == '/'){
-					if(command.substring(1, 5).equalsIgnoreCase("join")){
-						joinCreateRoom = new String[3];
-						joinCreateRoom[0] = command.substring(6);
-						joinCreateRoom[1] = loggedInName;
-						joinCreateRoom[2] = "join";
-						JoinCreateRoomAddToDb joinCreateRoomAddToDb = new JoinCreateRoomAddToDb();
-						joinCreateRoomAddToDb.execute(joinCreateRoom);
-					}else if(command.substring(1, 5).equalsIgnoreCase("help")){
+					try{
+						if(command.substring(1, 5).equalsIgnoreCase("join")){
+							try{
+								joinCreateRoom = new String[3];
+								joinCreateRoom[0] = command.substring(6);
+								joinCreateRoom[1] = loggedInName;
+								joinCreateRoom[2] = "join";
+								JoinCreateRoomAddToDb joinCreateRoomAddToDb = new JoinCreateRoomAddToDb();
+								joinCreateRoomAddToDb.execute(joinCreateRoom);
+							}catch(StringIndexOutOfBoundsException e){
+								txtViewOutput.setText("");
+								outputHistory+="You need to give a name to the group!\n";
+								txtViewOutput.setText(outputHistory);
+							}
+								
+						}else if(command.substring(1, 5).equalsIgnoreCase("help")){
+							txtViewOutput.setText("");
+							outputHistory+="Command list\n============\n/join <room name> - To join a room, if room does not exist, you have the option to create it\n";
+							txtViewOutput.setText(outputHistory);
+						}
+					}catch(StringIndexOutOfBoundsException e){
 						txtViewOutput.setText("");
-						outputHistory+="Command list\n============\n/join <room name> - To join a room, if room does not exist, you have the option to create it\n";
+						outputHistory+="Enter a valid command, try /help\n";
 						txtViewOutput.setText(outputHistory);
 					}
+					
 				}
 				editTxtCommands.setText("");
 				command="";

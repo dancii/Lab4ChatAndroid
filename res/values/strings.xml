@@ -8,11 +8,11 @@
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_section1">PM</string>
     <string name="title_section2">Rooms</string>
-    <string name="title_section3">PROFILE</string>
+    <string name="title_section3">Invites</string>
     <string name="title_section4">Terminal</string>
     <string name="title_activity_active_chats">ActiveChats</string>
     <string name="title_activity_rooms">Rooms</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_profile">Invites</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_chat_window">ChatWindowActivity</string>
     <string name="createRoom">Create Room</string>
