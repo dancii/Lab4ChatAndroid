@@ -26,4 +26,14 @@
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@+id/txtViewStaticEmail" />
 
+    <ListView
+        android:id="@+id/lstViewPendingFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="false"
+        android:layout_alignLeft="@+id/txtViewStaticEmail"
+        android:layout_below="@+id/txtEmail"
+        android:layout_marginTop="34dp" >
+    </ListView>
+
 </RelativeLayout>
