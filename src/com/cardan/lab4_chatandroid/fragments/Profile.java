@@ -62,11 +62,8 @@ public class Profile extends Fragment implements ConnectionCallbacks, OnConnecti
 		txtEmail = (TextView) rootView.findViewById(R.id.txtEmail);
 		lstViewPendingFriends = (ListView) rootView.findViewById(R.id.lstViewPendingFriends);
 		
-		listItems.add("HEJ");
 		adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,listItems);
 		lstViewPendingFriends.setAdapter(adapter);
-		listItems.add("HEJ2");
-		adapter.notifyDataSetChanged();
 		lstViewPendingFriends.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -78,8 +75,8 @@ public class Profile extends Fragment implements ConnectionCallbacks, OnConnecti
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String parameters[] = {loggedInName, listItems.get(arg2)};
-						AcceptFriendRequest acceptFriendRequest = new AcceptFriendRequest();
+						String parameters[] = {loggedInName, listItems.get(arg2), "accept"};
+						AcceptOrDeclineFriendRequest acceptFriendRequest = new AcceptOrDeclineFriendRequest();
 						acceptFriendRequest.execute(parameters);
 						listItems.remove(arg2);
 						adapter.notifyDataSetChanged();
@@ -94,7 +91,11 @@ public class Profile extends Fragment implements ConnectionCallbacks, OnConnecti
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						
+						String parameters[] = {loggedInName, listItems.get(arg2), "decline"};
+						AcceptOrDeclineFriendRequest declineFriendRequest = new AcceptOrDeclineFriendRequest();
+						declineFriendRequest.execute(parameters);
+						listItems.remove(arg2);
+						adapter.notifyDataSetChanged();
 					}
 				}).show();
 			}
@@ -216,15 +217,22 @@ private class GetAllFriendsRequest extends AsyncTask<String, String, String>{
 
 	}
 	
-private class AcceptFriendRequest extends AsyncTask<String, String, String>{
+private class AcceptOrDeclineFriendRequest extends AsyncTask<String, String, String>{
 	
 	protected String doInBackground(String... params) {
 		 String result = "";
 		 String username = params[0];
 		 String fromEmail = params[1];
+		 String acceptOrDecline = params[2];
 		 ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
 		 InputStream is = null;
-		 nameValuePairs.add(new BasicNameValuePair("checkReq", "acceptPendingFriend"));
+		 if(acceptOrDecline.equalsIgnoreCase("accept")){
+			 nameValuePairs.add(new BasicNameValuePair("checkReq", "acceptPendingFriend"));
+			 result = "accept";
+		 }else{
+			 nameValuePairs.add(new BasicNameValuePair("checkReq", "declinePendingFriend"));
+			 result = "decline";
+		 }
 		 nameValuePairs.add(new BasicNameValuePair("username", username));
 		 nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
 		 try{
@@ -242,11 +250,15 @@ private class AcceptFriendRequest extends AsyncTask<String, String, String>{
                     }
                 });*/
          }
-		 return null;
+		 return result;
 	}
 	
-	protected void onPostExecute(String arg) {
-		
+	protected void onPostExecute(String result) {
+		if(result.equalsIgnoreCase("accept")){
+			Toast.makeText(getActivity(), "Accepted friend", Toast.LENGTH_SHORT).show();
+		}else{
+			Toast.makeText(getActivity(), "Decliend friend", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }

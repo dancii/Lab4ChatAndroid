@@ -72,11 +72,8 @@ public class ChatWindowActivity extends Activity{
 			contactChatId = extras.getString("contactChatId");
 		}
 		
-		appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
-		
 		updateMessages();
 		
-		System.out.println("ContactId: "+contactChatId+" Contactname: "+contactName+" Message: "+message);
 		btnSend.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -86,6 +83,7 @@ public class ChatWindowActivity extends Activity{
 				message +=editTxtMessage.getText().toString();
 				//messageHistory+="You: "+message+"\n";
 				String[] sendMessageObj = {fromEmail,contactName,message};
+				appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
 				shareRegidTask = new AsyncTask<String,Void,String>() {
 					@Override
 					protected String doInBackground(String... params) {
