@@ -29,6 +29,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Terminal extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener{
@@ -36,10 +39,38 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 	private GoogleApiClient mGoogleApiClient;
 	private String loggedInName;
 	String[] joinCreateRoom=null;
+	private TextView txtViewOutput=null;
+	private EditText editTxtCommands = null;
+	private Button btnEnter=null;
+	private String outputHistory="";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.activity_terminal, container,false);
+		txtViewOutput = (TextView) rootView.findViewById(R.id.txtViewOutput);
+		editTxtCommands = (EditText) rootView.findViewById(R.id.editTxtCommands);
+		btnEnter = (Button) rootView.findViewById(R.id.btnEnter);
+		
+		btnEnter.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String command = editTxtCommands.getText().toString();
+				if(command.charAt(0) == '/'){
+					if(command.substring(1, 5).equalsIgnoreCase("join")){
+						joinCreateRoom = new String[3];
+						joinCreateRoom[0] = command.substring(6);
+						joinCreateRoom[1] = loggedInName;
+						joinCreateRoom[2] = "join";
+						JoinCreateRoomAddToDb joinCreateRoomAddToDb = new JoinCreateRoomAddToDb();
+						joinCreateRoomAddToDb.execute(joinCreateRoom);
+					}
+				}
+				editTxtCommands.setText("");
+				command="";
+			}
+		});
 		
 		mGoogleApiClient = new GoogleApiClient.Builder(rootView.getContext())
         .addConnectionCallbacks(this)
@@ -118,6 +149,7 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 				return result;
 			}else if(result.equalsIgnoreCase("Joining")){
 				System.out.println("Joining");
+				
 				return result;
 			}else{
 				System.out.println("Adding room!");
@@ -149,7 +181,9 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 					}
 				}).show();
 			}else if(result.equalsIgnoreCase("Joining")){
-				Toast.makeText(getActivity(), "Joined", Toast.LENGTH_SHORT).show();
+				txtViewOutput.setText("");
+				outputHistory+="Room found, check 'ROOM' tab!\n";
+				txtViewOutput.setText(outputHistory);
 			}else{
 				Toast.makeText(getActivity(), "Room created!", Toast.LENGTH_SHORT).show();
 			}
@@ -170,13 +204,7 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		/*loggedInName = Plus.AccountApi.getAccountName(mGoogleApiClient);
-		joinCreateRoom = new String[3];
-		joinCreateRoom[0] = "Cool stuff";
-		joinCreateRoom[1] = loggedInName;
-		joinCreateRoom[2] = "join";
-		JoinCreateRoomAddToDb joinCreateRoomAddToDb = new JoinCreateRoomAddToDb();
-		joinCreateRoomAddToDb.execute(joinCreateRoom);*/
+		loggedInName = Plus.AccountApi.getAccountName(mGoogleApiClient);
 	}
 
 

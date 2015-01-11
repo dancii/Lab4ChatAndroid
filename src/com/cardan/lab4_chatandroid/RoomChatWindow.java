@@ -39,7 +39,7 @@ public class RoomChatWindow extends Activity {
 	private static String loggedInName = "";
 	private static String roomName = "";
 	private static TextView roomMessages = null;
-	private EditText editTxtmessage = null;
+	private static EditText editTxtmessage = null;
 	private Button btnSend = null;
 	private String message="";
 	private ShareExternalServer appUtil;
@@ -77,7 +77,7 @@ public class RoomChatWindow extends Activity {
 				String[] saveRoomMessageParams={roomName,loggedInName,message};
 				SaveRoomMessageToDb saveRoomMessageToDb = new SaveRoomMessageToDb();
 				saveRoomMessageToDb.execute(saveRoomMessageParams);
-				
+				updateRoomMessages();
 			}
 		});
 		
@@ -179,10 +179,11 @@ private static class GetAllRoomMessages extends AsyncTask<String, String, String
 					if(roomMessageUser.getRoomUsername().equalsIgnoreCase(loggedInName)){
 						messageRoomHistory +="You: "+roomMessageUser.getMessage()+"\n";
 					}else{
-						messageRoomHistory += roomMessageUser.getRoomUsername()+": "+roomMessageUser.getMessage();
+						messageRoomHistory += roomMessageUser.getRoomUsername()+": "+roomMessageUser.getMessage()+"\n";
 					}
 				}
 				roomMessages.setText(messageRoomHistory);
+				editTxtmessage.setText("");
 			}
 		}
 	}
