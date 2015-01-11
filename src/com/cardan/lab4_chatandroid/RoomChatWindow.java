@@ -188,6 +188,8 @@ private static class GetAllRoomMessages extends AsyncTask<String, String, String
 		}
 	}
 
+	//Helper methods to determine if activity is in foreground or background
+
 	@Override
 	protected void onPause(){
 		System.out.println("Paused: "+paused+" Resumed: "+resumed);

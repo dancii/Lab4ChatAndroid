@@ -18,6 +18,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.internal.ot;
 import com.google.android.gms.plus.Plus;
 
 import android.app.AlertDialog;
@@ -65,6 +66,10 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 						joinCreateRoom[2] = "join";
 						JoinCreateRoomAddToDb joinCreateRoomAddToDb = new JoinCreateRoomAddToDb();
 						joinCreateRoomAddToDb.execute(joinCreateRoom);
+					}else if(command.substring(1, 5).equalsIgnoreCase("help")){
+						txtViewOutput.setText("");
+						outputHistory+="Command list\n============\n/join <room name> - To join a room, if room does not exist, you have the option to create it\n";
+						txtViewOutput.setText(outputHistory);
 					}
 				}
 				editTxtCommands.setText("");
@@ -97,7 +102,7 @@ public class Terminal extends Fragment implements ConnectionCallbacks, OnConnect
 	    }
 	}
 	
-	
+	//Join if room exists else gives the option to create room
 	private class JoinCreateRoomAddToDb extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {

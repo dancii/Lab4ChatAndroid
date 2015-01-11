@@ -108,7 +108,6 @@ int id buyButton 0x7f0b000c
 int id buy_now 0x7f0b0011
 int id buy_with_google 0x7f0b0012
 int id classic 0x7f0b0014
-int id createRoom 0x7f0b002a
 int id donate_with_google 0x7f0b0013
 int id editTxtCommands 0x7f0b0026
 int id editTxtMessageRoom 0x7f0b0022

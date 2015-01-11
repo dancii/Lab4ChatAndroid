@@ -83,7 +83,8 @@ public class ChatWindowActivity extends Activity{
 				message +=editTxtMessage.getText().toString();
 				//messageHistory+="You: "+message+"\n";
 				String[] sendMessageObj = {fromEmail,contactName,message};
-				appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
+				
+				//Sends a notification via GCM to the recipient and also the do db to store the message
 				shareRegidTask = new AsyncTask<String,Void,String>() {
 					@Override
 					protected String doInBackground(String... params) {
@@ -97,6 +98,8 @@ public class ChatWindowActivity extends Activity{
 						 nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
 						 nameValuePairs.add(new BasicNameValuePair("toEmail", toEmail));
 						 nameValuePairs.add(new BasicNameValuePair("message", message));
+						 
+						 appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
 						 
 						 try{
 				            	HttpClient httpClient=new DefaultHttpClient();
@@ -138,7 +141,7 @@ public class ChatWindowActivity extends Activity{
 	}
 
 
-	
+	//Gets all the messages between two participants from db
 private static class GetAllMessages extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {
@@ -233,6 +236,7 @@ private static class GetAllMessages extends AsyncTask<String, String, String>{
 		
 	}
 	
+	//Help methods to check if activity is in foreground or background
 	@Override
 	protected void onPause(){
 		System.out.println("Paused: "+paused+" Resumed: "+resumed);

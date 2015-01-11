@@ -475,7 +475,6 @@ containing a value of this type.
         public static final int buy_now=0x7f0b0011;
         public static final int buy_with_google=0x7f0b0012;
         public static final int classic=0x7f0b0014;
-        public static final int createRoom=0x7f0b002a;
         public static final int donate_with_google=0x7f0b0013;
         public static final int editTxtCommands=0x7f0b0026;
         public static final int editTxtMessageRoom=0x7f0b0022;

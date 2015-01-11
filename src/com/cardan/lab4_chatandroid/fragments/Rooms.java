@@ -96,6 +96,7 @@ public class Rooms extends Fragment implements ConnectionCallbacks, OnConnection
 	    }
 	}
 	
+	//Get all rooms that you participate in
 private class GetAllRooms extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {

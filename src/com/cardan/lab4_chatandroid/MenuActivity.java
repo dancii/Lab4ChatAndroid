@@ -69,13 +69,6 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 public class MenuActivity extends FragmentActivity implements ActionBar.TabListener, ConnectionCallbacks, OnConnectionFailedListener{
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
-	 * derivative, which will keep every loaded fragment in memory. If this
-	 * becomes too memory intensive, it may be best to switch to a
-	 * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	private GoogleApiClient mGoogleApiClient;
 	private GoogleCloudMessaging gcm;
@@ -90,10 +83,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 	static final String TAG = "Register Activity";
 
 	String addedContact = null;
-	
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
+
 	ViewPager mViewPager;
 
 	@Override
@@ -190,6 +180,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			//Log user off
 			if (mGoogleApiClient.isConnected()) {
 				Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 				mGoogleApiClient.disconnect();
@@ -201,6 +192,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		    }
 			return true;
 		}else if(id == R.id.addUser){
+			//Friend request, starts asynctask to save in db
 			final EditText input = new EditText(this);
 			new AlertDialog.Builder(this)
 			.setTitle("Add contact")
@@ -269,6 +261,8 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 			super(fm);
 		}
 
+		//All the different fragments(Views)
+		
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
@@ -385,6 +379,7 @@ public class MenuActivity extends FragmentActivity implements ActionBar.TabListe
 		}	
 	}
 
+	//Add conversation to db (friend request)
 private class AddConvoToDB extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {
@@ -461,7 +456,7 @@ private class AddConvoToDB extends AsyncTask<String, String, String>{
 	
 
 	/*
-	 * GCM STUFF
+	 * GCM initialization
 	 */
 	
 	

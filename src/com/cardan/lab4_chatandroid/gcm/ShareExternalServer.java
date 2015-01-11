@@ -14,6 +14,8 @@ import android.util.Log;
 
 public class ShareExternalServer {
 
+	//Sends notification when sending messages between two parties.
+	
 	public String shareRegIdWithAppServer(final Context context, final String regId, final String sendFromUsername, final String message) {
 
 		String result = "";
@@ -33,16 +35,12 @@ public class ShareExternalServer {
         }catch(Exception e){
         	Log.e("AppUtil", "Error in sharing with App Server: " + e);
         }
-        int status = response.getStatusLine().getStatusCode();
-		if (status == 200) {
-			result = "RegId shared with Application Server. RegId: " + regId;
-		} else {
-			result = "Post Failure." + " Status: " + status;
-		}
+
 
 		return result;
 	}
 	
+	//Shares the mesage in a room
 	public String shareRoomMessage(String roomName, String roomMessage){
 		String result = "";
 		HttpClient httpClient = null;

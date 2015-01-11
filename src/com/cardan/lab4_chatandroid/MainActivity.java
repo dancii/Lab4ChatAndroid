@@ -1,3 +1,11 @@
+/*
+ * 
+ * Authors: Pontus Carlsson, Danijel Kljakic
+ * Jan 2015
+ * 
+ */
+
+
 package com.cardan.lab4_chatandroid;
 
 import android.app.Activity;
@@ -39,6 +47,7 @@ public class MainActivity extends Activity implements com.google.android.gms.com
 		
 		buttonListeners();
 		
+		//Connects to googles + service
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
         .addConnectionCallbacks(this)
         .addOnConnectionFailedListener(this)
@@ -96,6 +105,7 @@ public class MainActivity extends Activity implements com.google.android.gms.com
 		return super.onOptionsItemSelected(item);
 	}
 
+	//G+ method
 	private void resolveSignInError() {
 		  if (mConnectionResult.hasResolution()) {
 		    try {

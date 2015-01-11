@@ -110,7 +110,7 @@ public class ActiveChats extends Fragment implements ConnectionCallbacks, OnConn
 	}
 	
 	
-	
+	//Retrives all the conversations you are in and the friends has accepted
 private class GetAllConvos extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {

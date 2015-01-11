@@ -49,6 +49,7 @@ public class GCMNotificationIntentService extends IntentService {
 
 				Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 				
+				//Checks if the message comes from room activity or a conversation between two parts.
 				String messageFromServer = extras.get(Config.MESSAGE_KEY).toString();
 				if(messageFromServer.substring(0,6).equalsIgnoreCase("<>!?/*")){
 					if(RoomChatWindow.isApplicationInForeground()){

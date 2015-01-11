@@ -68,6 +68,7 @@ public class Profile extends Fragment implements ConnectionCallbacks, OnConnecti
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2, long arg3) {
+				//Alert dialog to give option to accept, decline or choose later for friend request
 				new AlertDialog.Builder(getActivity())
 				.setTitle("Add contact")
 				.setMessage("Contact's email")
@@ -146,6 +147,7 @@ public class Profile extends Fragment implements ConnectionCallbacks, OnConnecti
 		
 	}
 	
+	//Retrives all the pending friends requests
 private class GetAllFriendsRequest extends AsyncTask<String, String, String>{
 		
 		protected String doInBackground(String... params) {
@@ -217,6 +219,7 @@ private class GetAllFriendsRequest extends AsyncTask<String, String, String>{
 
 	}
 	
+//Asynctask to accept the friend request or decline it
 private class AcceptOrDeclineFriendRequest extends AsyncTask<String, String, String>{
 	
 	protected String doInBackground(String... params) {

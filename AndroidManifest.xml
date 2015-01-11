@@ -28,7 +28,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,36 +56,44 @@
 
         <activity
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu" >
+            android:label="@string/title_activity_menu" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".fragments.ActiveChats"
-            android:label="@string/title_activity_active_chats" >
+            android:label="@string/title_activity_active_chats"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".fragments.Rooms"
-            android:label="@string/title_activity_rooms" >
+            android:label="@string/title_activity_rooms"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".fragments.Profile"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_profile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".gcm.RegisterActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ChatWindowActivity"
             android:label="@string/title_activity_chat_window"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Terminal"
-            android:label="@string/title_activity_terminal" >
+            android:label="@string/title_activity_terminal"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".RoomChatWindow"
-            android:label="@string/title_activity_room_chat_window" >
+            android:label="@string/title_activity_room_chat_window"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
