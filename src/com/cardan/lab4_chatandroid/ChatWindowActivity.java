@@ -41,7 +41,7 @@ import android.widget.Toast;
 public class ChatWindowActivity extends Activity{
 
 	private static String fromEmail=null;
-	private static String contactName=null;
+	private static String toEmail=null;
 	private String contactChatId=null;
 	private Button btnSend=null;
 	private static TextView txtMessages=null;
@@ -68,7 +68,7 @@ public class ChatWindowActivity extends Activity{
 		if(extras != null){
 			System.out.println("Bundle here!!!!!");
 			fromEmail = extras.getString("fromContact");
-			contactName = extras.getString("contactName");
+			toEmail = extras.getString("contactName");
 			contactChatId = extras.getString("contactChatId");
 		}
 		
@@ -82,7 +82,7 @@ public class ChatWindowActivity extends Activity{
 				message="";
 				message +=editTxtMessage.getText().toString();
 				//messageHistory+="You: "+message+"\n";
-				String[] sendMessageObj = {fromEmail,contactName,message};
+				String[] sendMessageObj = {fromEmail,toEmail,message};
 				
 				//Sends a notification via GCM to the recipient and also the do db to store the message
 				shareRegidTask = new AsyncTask<String,Void,String>() {
@@ -99,7 +99,7 @@ public class ChatWindowActivity extends Activity{
 						 nameValuePairs.add(new BasicNameValuePair("toEmail", toEmail));
 						 nameValuePairs.add(new BasicNameValuePair("message", message));
 						 
-						 appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, contactName,message);
+						 appUtil.shareRegIdWithAppServer(getApplicationContext(), contactChatId, toEmail, fromEmail,message);
 						 
 						 try{
 				            	HttpClient httpClient=new DefaultHttpClient();
@@ -136,7 +136,7 @@ public class ChatWindowActivity extends Activity{
 	
 	public static void updateMessages(){
 		GetAllMessages getAllMessage = new GetAllMessages();
-		String[] toFromEmail = {fromEmail, contactName};
+		String[] toFromEmail = {fromEmail, toEmail};
 		getAllMessage.execute(toFromEmail);
 	}
 

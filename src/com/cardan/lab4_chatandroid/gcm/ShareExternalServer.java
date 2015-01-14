@@ -16,7 +16,7 @@ public class ShareExternalServer {
 
 	//Sends notification when sending messages between two parties.
 	
-	public String shareRegIdWithAppServer(final Context context, final String regId, final String sendFromUsername, final String message) {
+	public String shareRegIdWithAppServer(final Context context, final String regId, final String toEmail, final String fromEmail, final String message) {
 
 		String result = "";
 		HttpClient httpClient = null;
@@ -24,7 +24,8 @@ public class ShareExternalServer {
         ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("messageType", "convo"));
         nameValuePairs.add(new BasicNameValuePair("regId", regId));
-        nameValuePairs.add(new BasicNameValuePair("username", sendFromUsername));
+        nameValuePairs.add(new BasicNameValuePair("toEmail", toEmail));
+        nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
         nameValuePairs.add(new BasicNameValuePair("message", message));
         
         try{
@@ -41,7 +42,7 @@ public class ShareExternalServer {
 	}
 	
 	//Shares the mesage in a room
-	public String shareRoomMessage(String roomName, String roomMessage){
+	public String shareRoomMessage(String roomName, String roomMessage, String fromEmail){
 		String result = "";
 		HttpClient httpClient = null;
 		HttpResponse response = null;
@@ -49,6 +50,7 @@ public class ShareExternalServer {
         nameValuePairs.add(new BasicNameValuePair("messageType", "room")); // Check message type room or convo
         nameValuePairs.add(new BasicNameValuePair("roomName", roomName));
         nameValuePairs.add(new BasicNameValuePair("roomMessage", roomMessage));
+        nameValuePairs.add(new BasicNameValuePair("fromEmail", fromEmail));
         
         try{
         	httpClient=new DefaultHttpClient();

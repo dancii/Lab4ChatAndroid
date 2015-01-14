@@ -97,7 +97,7 @@ public class RoomChatWindow extends Activity {
             nameValuePairs.add(new BasicNameValuePair("username", username));
             nameValuePairs.add(new BasicNameValuePair("messageToRoom", messageToRoom));
             
-            appUtil.shareRoomMessage(roomName, messageToRoom);
+            appUtil.shareRoomMessage(roomName, messageToRoom,username);
             
             try{
             	HttpClient httpClient=new DefaultHttpClient();

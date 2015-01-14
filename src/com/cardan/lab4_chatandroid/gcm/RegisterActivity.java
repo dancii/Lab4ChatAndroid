@@ -28,7 +28,7 @@ public class RegisterActivity extends Activity {
 		shareRegidTask = new AsyncTask<Void,Void,String>() {
 			@Override
 			protected String doInBackground(Void... params) {
-				String result = appUtil.shareRegIdWithAppServer(context, regId,"","");
+				String result = "";//appUtil.shareRegIdWithAppServer(context, regId,"","");
 				return result;
 			}
 
